@@ -1,0 +1,90 @@
+{ // https://developer.chrome.com/extensions/manifest
+
+	"manifest_version": 2,
+	
+	"name": "Async Ext",
+	
+	"author": "Nico Pr",
+	
+	"version": "1.0",
+	
+	"description": "async chrome extension",
+	
+	"permissions": [ // https://developer.chrome.com/extensions/declare_permissions
+	
+		"*://localhost/*",
+		
+		"tabs"
+		
+	],
+	
+	"icons": { // https://developer.chrome.com/extensions/manifest/icons
+		
+		"48": "assets/icons/icon48.png",
+		"96": "assets/icons/icon96.png"
+		
+	},
+	
+	"browser_action": { // https://developer.chrome.com/extensions/browserAction
+		
+		"default_title": "Async Ext Settings",
+		"default_icon": "assets/icons/icon48.png",
+		"default_popup": "resources/popup/popup.html"
+		
+	},
+	
+	"background": { // https://developer.chrome.com/extensions/background_pages
+		
+		"scripts": [
+			
+			"resources/base/Common.js", 
+			"resources/base/ports/PortBase.js", 
+			"resources/base/ports/BackgroundPort.js", 
+			"resources/base/scripts/BackgroundScript.js", 
+			"resources/background.js"
+			
+		]
+		
+	},
+
+	"content_scripts": [ // https://developer.chrome.com/extensions/content_scripts
+		{
+		
+			"matches": [ // https://developer.chrome.com/apps/match_patterns
+			
+				"*://localhost/*"
+				
+			],
+			
+			"js": [
+
+				"resources/base/Common.js", 
+				"resources/base/ports/PortBase.js",
+				"resources/base/ports/ContentPort.js", 
+				"resources/base/scripts/ContentScript.js", 
+				"resources/content.js"
+				
+			],
+			
+			"run_at": "document_end" // https://developer.chrome.com/extensions/content_scripts#run_time
+			
+		}
+	],
+	
+	"web_accessible_resources": [ // https://developer.chrome.com/extensions/manifest/web_accessible_resources
+	
+		
+		
+	],
+	
+	
+	"externally_connectable": { // https://developer.chrome.com/apps/manifest/externally_connectable // https://stackoverflow.com/a/18304985/3089199
+	
+		"matches": [ // https://developer.chrome.com/apps/match_patterns
+		
+			"*://localhost/*"
+			
+		]
+		
+	}
+}

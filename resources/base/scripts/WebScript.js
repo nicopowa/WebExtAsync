@@ -1,0 +1,7 @@
+class WebScript {
+
+	constructor() {
+		
+	}
+
+}
