@@ -1,22 +1,32 @@
+/**
+ * @class PopupPort : 
+ * @extends {PortBase}
+ */
 class PopupPort extends PortBase {
 
+	/**
+	 * @construct
+	 * @param {function} onData : 
+	 */
 	constructor(onData) {
 		super(POPUP, onData);
 		this.tabs = [];
 	}
 
 	/**
+	 * @override
+	 * @async
 	 * @method onPortMessage : message from any port
 	 * @param {Object} message : 
-	 * @param {*} port: 
+	 * @param {Port} port: 
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
-		result = super.onPortMessage(message, port, result);
 		if(message.type === "info") {
 			this.tabs = message.data;
 			trace("tabs", this.tabs);
 		}
+		await super.onPortMessage(message, port, result);
 	}
 
 }

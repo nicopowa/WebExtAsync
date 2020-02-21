@@ -1,7 +1,10 @@
+/**
+ * @class PortBase : 
+ */
 class PortBase {
 
 	/**
-	 * 
+	 * @construct
 	 * @param {number} type : background content web popup
 	 * @param {function} onData : data callback
 	 * @param {function} onConnect : connect callback
@@ -24,13 +27,14 @@ class PortBase {
 	}
 
 	/**
+	 * @async
 	 * @method onPortMessage : message from any port
 	 * @param {Object} message : 
-	 * @param {*} port : 
+	 * @param {Port} port : 
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
-		//trace(message, result);
+		//if(DEBUG) trace(message, result);
 		if(message.type == "ack") {
 			if(this.promises.has(message.data.ack)) {
 				this.promises.get(message.data.ack)(message.data.result);
@@ -50,7 +54,7 @@ class PortBase {
 	 * @param {number} ack : if != 0 need ack plz
 	 */
 	send(target, type, data, tabId = -1, ack = 0) {
-		if(DEBUG) trace("send", type, "to", _name(target), "ack", ack);
+		if(DEBUG) trace("send", type, "to", name(target), "ack", ack);
 		this.port.postMessage({type: type, from: this.type, fromid: this.tabId, to: target, toid: tabId, data: data, ack: ack});
 	}
 

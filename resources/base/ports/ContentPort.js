@@ -1,13 +1,24 @@
+/**
+ * @class ContentPort : 
+ * @extends {PortBase}
+ */
 class ContentPort extends PortBase {
 
+	/**
+	 * @construct
+	 * @param {function} onData 
+	 */
 	constructor(onData) {
 		super(CONTENT, onData);
+
 	}
 
 	/**
+	 * @override
+	 * @async
 	 * @method onPortMessage : message from any port
 	 * @param {Object} message : 
-	 * @param {*} port : 
+	 * @param {Port} port : 
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {

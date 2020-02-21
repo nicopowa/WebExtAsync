@@ -1,9 +1,30 @@
+/**
+ * @class ExtensionBackgroundScript : 
+ * @extends {BackgroundScript}
+ */
 class ExtensionBackgroundScript extends BackgroundScript {
 
+	/**
+	 * @construct
+	 */
 	constructor() {
 		super();
 	}
 
+	/**
+	 * @async
+	 * @method start : 
+	 */
+	async start() {
+		await super.start();
+		
+		trace("custom start background");
+	}
+
+	/**
+	 * @method onConnect : 
+	 * @param {number} tabId : 
+	 */
 	onConnect(tabId) {
 		super.onConnect(tabId);
 
@@ -11,6 +32,10 @@ class ExtensionBackgroundScript extends BackgroundScript {
 
 	}
 
+	/**
+	 * @method onDisconnect : 
+	 * @param {number} tabId : 
+	 */
 	onDisconnect(tabId) {
 		super.onDisconnect(tabId);
 
@@ -18,6 +43,13 @@ class ExtensionBackgroundScript extends BackgroundScript {
 
 	}
 
+	/**
+	 * @method onMessage : 
+	 * @param {number} from : 
+	 * @param {string} type : 
+	 * @param {*} data : 
+	 * @param {number} tabId : 
+	 */
 	onMessage(from, type, data, tabId) {
 		let result = super.onMessage(from, type, data, tabId);
 

@@ -1,35 +1,49 @@
+/**
+ * @class BackgroundScript : 
+ */
 class BackgroundScript {
 
+	/**
+	 * @construct
+	 */
 	constructor() {
-		trace("start background script");
 		this.port = new BackgroundPort(this.onMessage.bind(this), this.onConnect.bind(this), this.onDisconnect.bind(this));
+		this.start();
+	}
+
+	/**
+	 * @async
+	 * @method start : 
+	 */
+	async start() {
+		if(DEBUG) trace("START BACKGROUND SCRIPT");
 	}
 
 	/**
 	 * @method onConnect : new tab matches extensions rules
-	 * @param {number} tabId 
+	 * @param {number} tabId : 
 	 */
 	onConnect(tabId) {
-		trace("new tab :", tabId);
+		if(DEBUG) trace("new tab :", tabId);
 	}
 
 	/**
 	 * @method onDisconnect : tab was closed
-	 * @param {number} tabId 
+	 * @param {number} tabId : 
 	 */
 	onDisconnect(tabId) {
-		trace("close tab", tabId);
+		if(DEBUG) trace("close tab", tabId);
 	}
 
 	/**
-	 * 
+	 * @method onMessage : 
 	 * @param {number} from : const background content web popup
 	 * @param {string} type : message type
 	 * @param {*} data : message data
 	 * @param {number} tabId : emitter tabId if available
 	 */
 	onMessage(from, type, data, tabId) {
-		trace(type, "from", _name(from), "tab", tabId);
+		if(DEBUG) trace(type, "from", name(from), "tab", tabId);
 		let result = null;
 		switch(type) {
 
@@ -39,6 +53,7 @@ class BackgroundScript {
 
 	/**
 	 * @method activeTab : get active tab info
+	 * @return {Promise}
 	 */
 	activeTab() {
 		return new Promise(resolve => which.tabs.query({"active": true, "currentWindow": true}, tabs => resolve(tabs[0])));
@@ -46,8 +61,9 @@ class BackgroundScript {
 
 	/**
 	 * @method updateTab : update tab properties
-	 * @param {number} tabId 
-	 * @param {Object} updateInfos 
+	 * @param {number} tabId : 
+	 * @param {Object} updateInfos : 
+	 * @return {Promise}
 	 */
 	updateTab(tabId, updateInfos) {
 		return new Promise(resolve => which.tabs.update(tabId, updateInfos, tab => resolve(tab)));
@@ -56,14 +72,16 @@ class BackgroundScript {
 	/**
 	 * @method muteTab : mute
 	 * @param {number} tabId : 
+	 * @return {Promise}
 	 */
 	mute(tabId) {
 		return this.updateTab(tabId, {"muted": true});
 	}
 	
 	/**
-	 * @method unmuteTab : mute
+	 * @method unmuteTab : unmute
 	 * @param {number} tabId : 
+	 * @return {Promise}
 	 */
 	unmute(tabId) {
 		return this.updateTab(tabId, {"muted": false});
@@ -73,6 +91,7 @@ class BackgroundScript {
 	 * @method reload : reload tab
 	 * @param {number} tabId : 
 	 * @param {boolean} bypassCache : ignore browser cache
+	 * @return {Promise}
 	 */
 	reload(tabId, bypassCache = false) {
 		return new Promise(resolve => which.tabs.reload(tabId, {"bypassCache": bypassCache}, () => resolve()));
@@ -82,6 +101,7 @@ class BackgroundScript {
 	 * @method exec : exec some code in given tab
 	 * @param {number} tabId : 
 	 * @param {string} code : savage code string
+	 * @return {Promise}
 	 */
 	exec(tabId, code) {
 		return new Promise(resolve => which.tabs.executeScript(tabId, {"code": code}, result => resolve(result)));
@@ -89,7 +109,8 @@ class BackgroundScript {
 	
 	/**
 	 * @method close : close tab
-	 * @param {number} tabId 
+	 * @param {number} tabId : 
+	 * @return {Promise}
 	 */
 	close(tabId) {
 		return new Promise(resolve => which.tabs.remove(tabId, result => resolve(result)));
@@ -98,6 +119,7 @@ class BackgroundScript {
 	/**
 	 * @method download : download something
 	 * @param {Object} options : 
+	 * @return {Promise}
 	 */
 	download(options) {
 		return new Promise(resolve => which.downloads.download(options, result => resolve(result)));

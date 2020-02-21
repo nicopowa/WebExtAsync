@@ -1,10 +1,16 @@
-class WebPort {
+/**
+ * @class WebPort : 
+ * @extends {PortBase}
+ */
+class WebPort extends PortBase {
 
-	constructor() {
-		this.tabid = 0;
+	/**
+	 * @construct
+	 * @param {function} onData 
+	 */
+	constructor(onData) {
+		super(WEB, onData);
 		
-		this.port = which.runtime.connect({name: "web"});
-		this.port.onMessage.addListener(this.onPortMessage.bind(this));
 	}
 
 	onPortMessage(message) {
