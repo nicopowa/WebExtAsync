@@ -1,5 +1,5 @@
 /**
- * @class BackgroundScript : 
+ * @class BackgroundScript : base background script
  */
 class BackgroundScript {
 
@@ -13,10 +13,10 @@ class BackgroundScript {
 
 	/**
 	 * @async
-	 * @method start : 
+	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) trace("START BACKGROUND SCRIPT");
+		if(DEBUG) console.log("START BACKGROUND SCRIPT");
 	}
 
 	/**
@@ -24,7 +24,7 @@ class BackgroundScript {
 	 * @param {number} tabId : 
 	 */
 	onConnect(tabId) {
-		if(DEBUG) trace("new tab :", tabId);
+		if(DEBUG) console.log("new tab :", tabId);
 	}
 
 	/**
@@ -32,20 +32,23 @@ class BackgroundScript {
 	 * @param {number} tabId : 
 	 */
 	onDisconnect(tabId) {
-		if(DEBUG) trace("close tab", tabId);
+		if(DEBUG) console.log("close tab", tabId);
 	}
 
 	/**
-	 * @method onMessage : 
+	 * @method onMessage : message received
 	 * @param {number} from : const background content web popup
 	 * @param {string} type : message type
 	 * @param {*} data : message data
 	 * @param {number} tabId : emitter tabId if available
 	 */
 	onMessage(from, type, data, tabId) {
-		if(DEBUG) trace(type, "from", name(from), "tab", tabId);
+		if(DEBUG) console.log(type, "from", name(from), "tab", tabId);
 		let result = null;
 		switch(type) {
+
+			default:
+				break;
 
 		}
 		return result;
@@ -70,7 +73,7 @@ class BackgroundScript {
 	}
 
 	/**
-	 * @method muteTab : mute
+	 * @method muteTab : mute tab
 	 * @param {number} tabId : 
 	 * @return {Promise}
 	 */
@@ -79,7 +82,7 @@ class BackgroundScript {
 	}
 	
 	/**
-	 * @method unmuteTab : unmute
+	 * @method unmuteTab : unmute tab
 	 * @param {number} tabId : 
 	 * @return {Promise}
 	 */
@@ -123,6 +126,37 @@ class BackgroundScript {
 	 */
 	download(options) {
 		return new Promise(resolve => which.downloads.download(options, result => resolve(result)));
+	}
+
+	/**
+	 * @method createWindow : create new window
+	 * @param {string} url : window url
+	 * @param {number} x : x coordinate
+	 * @param {number} y : y coordinate
+	 * @param {number} width : window width
+	 * @param {number} height : window height
+	 */
+	createWindow(url, x, y, width, height) {
+		return new Promise((resolve, reject) => which.windows.create({
+			"url": url,
+			"left": x,
+			"top": y,
+			"width": width,
+			"height": height, 
+			//"focused": true,
+			"incognito": false,
+			"type": "popup", // "normal", "popup"
+			//"state": state, // "normal", "minimized", "maximized", "fullscreen"
+			"setSelfAsOpener": false
+		}, window => resolve(window)));
+	}
+	
+	updateWindow(windowId, updates) {
+		return new Promise((resolve, reject) => which.windows.update(windowId, updates, window => resolve(window)));
+	}
+
+	static get type() {
+		return BACKGROUND;
 	}
 
 }

@@ -18,7 +18,7 @@ class ExtensionBackgroundScript extends BackgroundScript {
 	async start() {
 		await super.start();
 		
-		trace("custom start background");
+		console.log("custom start background");
 	}
 
 	/**
@@ -57,7 +57,7 @@ class ExtensionBackgroundScript extends BackgroundScript {
 		switch(type) {
 
 			case "test":
-				trace("test message from", _name(from));
+				console.log("test message from", name(from));
 				break;
 
 		}
@@ -67,4 +67,4 @@ class ExtensionBackgroundScript extends BackgroundScript {
 
 }
 
-new ExtensionBackgroundScript();
+liftoff(ExtensionBackgroundScript);

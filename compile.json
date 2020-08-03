@@ -1,0 +1,55 @@
+{
+	"package": {
+		"output_file": "../package/WebExtAsync/resources/package.min.js",
+		"files": [
+			"resources/base/ports/PortBase.js", 
+			"resources/base/ports/BackgroundPort.js", 
+			"resources/base/ports/ContentPort.js", 
+			"resources/base/ports/PopupPort.js", 
+			"resources/base/ports/WebPort.js", 
+			"resources/base/Common.js", 
+			"resources/base/scripts/BackgroundScript.js", 
+			"resources/base/scripts/ContentScript.js", 
+			"resources/base/scripts/PopupScript.js", 
+			"resources/base/scripts/WebScript.js",
+			"resources/background.js",
+			"resources/content.js",
+			"resources/popup/popup.js",
+			"resources/web.js"
+		],
+		"options": [
+			{"define": "DEBUG=false"},
+			{"language_out": "ES_NEXT"}
+		],
+		"externs": [
+			"third/chrome"
+		]
+	},
+	
+	"debug": {
+		"output_file": "../package/WebExtAsync/resources/package.debug.min.js",
+		"files": [
+			"resources/base/ports/PortBase.js", 
+			"resources/base/ports/BackgroundPort.js", 
+			"resources/base/ports/ContentPort.js", 
+			"resources/base/ports/PopupPort.js", 
+			"resources/base/ports/WebPort.js", 
+			"resources/base/Common.js", 
+			"resources/base/scripts/BackgroundScript.js", 
+			"resources/base/scripts/ContentScript.js", 
+			"resources/base/scripts/PopupScript.js", 
+			"resources/base/scripts/WebScript.js",
+			"resources/background.js",
+			"resources/content.js",
+			"resources/popup/popup.js",
+			"resources/web.js"
+		],
+		"options": [
+			{"define": "DEBUG=true"},
+			{"language_out": "ES_NEXT"}
+		],
+		"externs": [
+			"third/chrome"
+		]
+	}
+}

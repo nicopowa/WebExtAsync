@@ -18,7 +18,7 @@ class ExtensionPopupScript extends PopupScript {
 	async start() {
 		await super.start();
 
-		trace("custom start popup");
+		console.log("custom start popup");
 		
 		setTimeout(() => {
 			this.port.send(CONTENT, "test", {hello: "world"}, this.port.tabs[0]);
@@ -44,4 +44,4 @@ class ExtensionPopupScript extends PopupScript {
 
 }
 
-new ExtensionPopupScript();
+liftoff(ExtensionPopupScript);

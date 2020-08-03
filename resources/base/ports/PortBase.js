@@ -1,13 +1,13 @@
 /**
- * @class PortBase : 
+ * @class PortBase : base port class
  */
 class PortBase {
 
 	/**
 	 * @construct
 	 * @param {number} type : background content web popup
-	 * @param {function} onData : data callback
-	 * @param {function} onConnect : connect callback
+	 * @param {Function} onData : data callback
+	 * @param {Function=} onConnect : connect callback
 	 */
 	constructor(type, onData, onConnect) {
 
@@ -29,12 +29,12 @@ class PortBase {
 	/**
 	 * @async
 	 * @method onPortMessage : message from any port
-	 * @param {Object} message : 
-	 * @param {Port} port : 
+	 * @param {Object} message : received message
+	 * @param {Port} port : message origin port
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
-		//if(DEBUG) trace(message, result);
+		//if(DEBUG) console.log(message, result);
 		if(message.type == "ack") {
 			if(this.promises.has(message.data.ack)) {
 				this.promises.get(message.data.ack)(message.data.result);
@@ -47,14 +47,14 @@ class PortBase {
 
 	/**
 	 * @method send : send message to given port
-	 * @param {number} target : target port type (content web popup)
+	 * @param {number} target : target port type (CONTENT | WEB | POPUP)
 	 * @param {string} type : message type
 	 * @param {*} data : message data
-	 * @param {number} tabId : tabId if target content or web
+	 * @param {number} tabId : tabId if target is content or web script
 	 * @param {number} ack : if != 0 need ack plz
 	 */
 	send(target, type, data, tabId = -1, ack = 0) {
-		if(DEBUG) trace("send", type, "to", name(target), "ack", ack);
+		if(DEBUG) console.log("send", type, "to", name(target), "ack", ack);
 		this.port.postMessage({type: type, from: this.type, fromid: this.tabId, to: target, toid: tabId, data: data, ack: ack});
 	}
 
@@ -64,6 +64,7 @@ class PortBase {
 	 * @param {string} type : message type
 	 * @param {*} data : message data
 	 * @param {number} tabId : tabId if target content or web
+	 * @return {Promise}
 	 */
 	wait(target, type, data, tabId = -1) {
 		let ack = ++this.ack, prom = new Promise(resolve => this.promises.set(ack, resolve));

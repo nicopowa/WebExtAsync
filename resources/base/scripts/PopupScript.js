@@ -1,5 +1,5 @@
 /**
- * @class PopupScript : 
+ * @class PopupScript : base popup script
  */
 class PopupScript {
 
@@ -12,10 +12,10 @@ class PopupScript {
 
 	/**
 	 * @async
-	 * @method start : 
+	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) trace("START POPUP SCRIPT");
+		if(DEBUG) console.log("START POPUP SCRIPT");
 	}
 
 	/**
@@ -27,7 +27,7 @@ class PopupScript {
 	 * @param {number} tabId : emitter id
 	 */
 	async onMessage(from, type, data, tabId) {
-		if(DEBUG) trace(type, "from", name(from), "tab", tabId);
+		if(DEBUG) console.log(type, "from", name(from), "tab", tabId);
 		let result = null;
 		switch(type) {
 			case "start":
@@ -38,4 +38,8 @@ class PopupScript {
 		return result;
 	}
 
+	static get type() {
+		return POPUP;
+	}
+	
 }

@@ -1,5 +1,5 @@
 /**
- * @class WebScript : 
+ * @class WebScript : base web script
  */
 class WebScript {
 
@@ -12,10 +12,14 @@ class WebScript {
 
 	/**
 	 * @async
-	 * @method start : 
+	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) trace("START WEB SCRIPT");
+		if(DEBUG) console.log("START WEB SCRIPT");
+	}
+
+	static get type() {
+		return WEB;
 	}
 
 }

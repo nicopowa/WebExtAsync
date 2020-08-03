@@ -6,7 +6,7 @@ class ContentPort extends PortBase {
 
 	/**
 	 * @construct
-	 * @param {function} onData 
+	 * @param {Function} onData 
 	 */
 	constructor(onData) {
 		super(CONTENT, onData);
@@ -24,7 +24,7 @@ class ContentPort extends PortBase {
 	async onPortMessage(message, port, result) {
 		if(message.type === "info") { // && message.from == BACKGROUND
 			this.tabId = message.data;
-			trace("this is tab", this.tabId);
+			console.log("this is tab", this.tabId);
 			result = this.tabId;
 		}
 		await super.onPortMessage(message, port, result);

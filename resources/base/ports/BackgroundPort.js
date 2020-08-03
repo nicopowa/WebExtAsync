@@ -1,14 +1,14 @@
 /**
- * @class BackgroundPort : 
+ * @class BackgroundPort : background port, relay messages between extension scripts
  * @extends {PortBase}
  */
 class BackgroundPort extends PortBase {
 
 	/**
 	 * @construct
-	 * @param {function} onData : client data callback
-	 * @param {function} onConnect : client connect callback
-	 * @param {function} onDisconnect : client disconnect callback
+	 * @param {Function} onData : client data callback
+	 * @param {Function} onConnect : client connect callback
+	 * @param {Function} onDisconnect : client disconnect callback
 	 */
 	constructor(onData, onConnect, onDisconnect) {
 		super(BACKGROUND, onData, onConnect);
@@ -25,16 +25,16 @@ class BackgroundPort extends PortBase {
 
 	/**
 	 * @method onPortConnect : new port connected (content or popup)
-	 * @param {Port} port : 
+	 * @param {Port} port : connected port
 	 */
 	async onPortConnect(port) {
 		if(port.sender.id != which.runtime.id) {
-			trace("extension", port.sender.id, "not allowed");
+			console.log("extension", port.sender.id, "not allowed");
 			return port.disconnect();
 		}
 		
 		let type = parseInt(port.name, 10);
-		if(DEBUG) trace(name(type), "port connected");
+		if(DEBUG) console.log(name(type), "port connected");
 
 		port.onMessage.addListener((message, port) => this.onPortMessage(message, port, null));
 		port.onDisconnect.addListener(this.onPortDisconnect.bind(this));
@@ -58,17 +58,21 @@ class BackgroundPort extends PortBase {
 
 	/**
 	 * @method onExternalPortConnect : new external port connected (web)
-	 * @param {Port} port : 
+	 * @param {Port} port : connected port
 	 */
 	onExternalPortConnect(port) {
 		let type = parseInt(port.name, 10);
-		if(DEBUG) trace(name(type), "port connected");
+		if(DEBUG) console.log(name(type), "port connected");
 
 		switch(type) {
 				
 			case WEB:
 				this.webPorts.set(port.sender.tab.id, port);
 				// send self tabId to newly connected web
+				break;
+
+			default:
+
 				break;
 			
 		}
@@ -78,27 +82,28 @@ class BackgroundPort extends PortBase {
 	}
 
 	/**
+	 * @async
 	 * @method onPortMessage : message from any port
-	 * @param {Object} message : 
-	 * @param {Port} port : 
+	 * @param {Object} message : received message
+	 * @param {Port} port : message origin port
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
-		//if(DEBUG) trace(port, result);
+		//if(DEBUG) console.log(port, result);
 		if(message.to !== BACKGROUND) {
-			if(DEBUG) trace("relay", message.type, "to", name(message.to), "ack", message.ack);
+			if(DEBUG) console.log("relay", message.type, "to", name(message.to), "ack", message.ack);
 			this.send(message.to, message.type, message.data, message.toid, message.ack, message.from, message.fromid);
 		}
 		else super.onPortMessage(message, port, result);
 	}
 	
 	/**
-	 * @method onPortDisconnect : port is disconnected (tab or popup close)
-	 * @param {*} port 
+	 * @method onPortDisconnect : port disconnected (tab or popup close)
+	 * @param {Port} port : disconnected port
 	 */
 	onPortDisconnect(port) {
 		let type = parseInt(port.name, 10);
-		if(DEBUG) trace(name(type), "port disconnected");
+		if(DEBUG) console.log(name(type), "port disconnected");
 
 		switch(type) {
 			case CONTENT:
@@ -129,7 +134,7 @@ class BackgroundPort extends PortBase {
 	 */
 	send(target, type, data, tabId = -1, ack = 0, from = BACKGROUND, fromid = -1) {
 		// no super call
-		if(DEBUG) trace("send", type, "to", name(target), "ack", ack);
+		if(DEBUG) console.log("send", type, "to", name(target), "ack", ack);
 		let port = target === CONTENT ? this.contentPorts.get(tabId) : target === WEB ? this.webPorts.get(tabId) : this.popupPort;
 		port.postMessage({type: type, from: from, fromid: fromid, to: target, toid: tabId, data: data, ack: ack});
 	}

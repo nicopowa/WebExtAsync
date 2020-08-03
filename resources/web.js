@@ -18,9 +18,9 @@ class ExtensionWebScript extends WebScript {
 	async start() {
 		await super.start();
 		
-		trace("custom start web");
+		console.log("custom start web");
 	}
 
 }
 
-new ExtensionWebScript();
+liftoff(ExtensionWebScript);

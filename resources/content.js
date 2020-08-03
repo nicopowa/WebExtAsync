@@ -18,7 +18,7 @@ class ExtensionContentScript extends ContentScript {
 	async start() {
 		await super.start();
 
-		trace("custom start content");
+		console.log("custom start content");
 		// ready !
 		// start here
 
@@ -38,7 +38,7 @@ class ExtensionContentScript extends ContentScript {
 		switch(type) {
 
 			case "test":
-				trace("test from", _name(from));
+				console.log("test from", name(from));
 				break;
 
 		}
@@ -48,4 +48,4 @@ class ExtensionContentScript extends ContentScript {
 
 }
 
-new ExtensionContentScript();
+liftoff(ExtensionContentScript);

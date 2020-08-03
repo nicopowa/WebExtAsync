@@ -1,5 +1,5 @@
 /**
- * @class ContentScript : 
+ * @class ContentScript : base content script
  */
 class ContentScript {
 
@@ -13,10 +13,10 @@ class ContentScript {
 
 	/**
 	 * @async
-	 * @method start : 
+	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) trace("START CONTENT SCRIPT");
+		if(DEBUG) console.log("START CONTENT SCRIPT");
 	}
 
 	/**
@@ -28,7 +28,7 @@ class ContentScript {
 	 * @param {number} tabId : emitter id
 	 */
 	async onMessage(from, type, data, tabId) {
-		if(DEBUG) trace(type, "from", name(from), "tab", tabId);
+		if(DEBUG) console.log(type, "from", name(from), "tab", tabId);
 		let result = null;
 		switch(type) {
 			case "start":
@@ -37,6 +37,10 @@ class ContentScript {
 				break;
 		}
 		return result;
+	}
+
+	static get type() {
+		return CONTENT;
 	}
 
 }
