@@ -8,6 +8,11 @@ class BackgroundScript {
 	 */
 	constructor() {
 		this.port = new BackgroundPort(this.onMessage.bind(this), this.onConnect.bind(this), this.onDisconnect.bind(this));
+
+		this.tabs = new Map();
+
+		which.tabs.onUpdated.addListener((tabid, info, tab) => this.onUpdateTab(tabid, info, tab));
+		
 		this.start();
 	}
 
@@ -19,12 +24,17 @@ class BackgroundScript {
 		if(DEBUG) console.log("START BACKGROUND SCRIPT");
 	}
 
+	onOpen() {
+
+	}
+
 	/**
 	 * @method onConnect : new tab matches extensions rules
 	 * @param {number} tabId : 
 	 */
 	onConnect(tabId) {
 		if(DEBUG) console.log("new tab :", tabId);
+		this.tabs.set(tabId, {});
 	}
 
 	/**
@@ -52,6 +62,19 @@ class BackgroundScript {
 
 		}
 		return result;
+	}
+
+	/**
+	 * 
+	 * @param {number} tabid : 
+	 * @param {Object} info : 
+	 * @param {Object} tab : 
+	 */
+	onUpdateTab(tabId, info, tab) {
+		//console.log(tab, info);
+
+		if(this.tabs.has(tabId)) this.tabs.set(tabId, tab);
+
 	}
 
 	/**
@@ -151,8 +174,21 @@ class BackgroundScript {
 		}, window => resolve(window)));
 	}
 	
+	/**
+	 * 
+	 * @param {number} windowId : 
+	 * @param {Object} updates : 
+	 */
 	updateWindow(windowId, updates) {
 		return new Promise((resolve, reject) => which.windows.update(windowId, updates, window => resolve(window)));
+	}
+
+	get failed() {
+		return which.runtime.lastError !== "undefined";
+	}
+
+	get lastError() {
+		return Error(which.runtime.lastError);
 	}
 
 	static get type() {

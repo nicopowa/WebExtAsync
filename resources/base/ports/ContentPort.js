@@ -22,12 +22,15 @@ class ContentPort extends PortBase {
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
+
 		if(message.type === "info") { // && message.from == BACKGROUND
 			this.tabId = message.data;
 			console.log("this is tab", this.tabId);
 			result = this.tabId;
 		}
+		
 		await super.onPortMessage(message, port, result);
+
 	}
 
 }

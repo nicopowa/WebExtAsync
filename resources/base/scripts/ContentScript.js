@@ -9,6 +9,7 @@ class ContentScript {
 	constructor() {
 		this.tabId = -1;
 		this.port = new ContentPort(this.onMessage.bind(this));
+		this.hostname = location.host.replace("www.", "");
 	}
 
 	/**
@@ -16,7 +17,7 @@ class ContentScript {
 	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) console.log("START CONTENT SCRIPT");
+		if(DEBUG) console.log("START CONTENT SCRIPT", this.hostname);
 	}
 
 	/**

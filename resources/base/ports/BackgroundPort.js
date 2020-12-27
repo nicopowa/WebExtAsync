@@ -28,6 +28,7 @@ class BackgroundPort extends PortBase {
 	 * @param {Port} port : connected port
 	 */
 	async onPortConnect(port) {
+
 		if(port.sender.id != which.runtime.id) {
 			console.log("extension", port.sender.id, "not allowed");
 			return port.disconnect();
@@ -54,6 +55,7 @@ class BackgroundPort extends PortBase {
 				break;
 			
 		}
+		
 	}
 
 	/**
