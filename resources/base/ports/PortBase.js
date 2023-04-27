@@ -20,10 +20,15 @@ class PortBase {
 
 		this.tabId = -1;
 
-		if(this.type == BACKGROUND) return;
+		if(this.type === BACKGROUND) 
+			return;
 
-		this.port = which.runtime.connect({name: this.type.toString()});
-		this.port.onMessage.addListener((message, port) => this.onPortMessage(message, port, null));
+		this.port = which.runtime
+		.connect({name: this.type.toString()});
+
+		this.port.onMessage
+		.addListener((message, port) => this.onPortMessage(message, port, null));
+
 	}
 
 	/**
@@ -34,15 +39,26 @@ class PortBase {
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
+
 		//if(DEBUG) console.log(message, result);
+
 		if(message.type == "ack") {
+
 			if(this.promises.has(message.data.ack)) {
+
 				this.promises.get(message.data.ack)(message.data.result);
 				this.promises.delete(message.data.ack);
+
 			}
+
 		}
-		else if(result === null) result = await this.onData(message.from, message.type, message.data, message.fromid);
-		if(message.ack) this.send(message.from, "ack", {ack: message.ack, result: result}, message.fromid);
+
+		else if(result === null) 
+			result = await this.onData(message.from, message.type, message.data, message.fromid);
+
+		if(message.ack) 
+			this.send(message.from, "ack", {ack: message.ack, result: result}, message.fromid);
+
 	}
 
 	/**
@@ -54,8 +70,20 @@ class PortBase {
 	 * @param {number} ack : if != 0 need ack plz
 	 */
 	send(target, type, data, tabId = -1, ack = 0) {
-		if(DEBUG) console.log("send", type, "to", name(target), "ack", ack);
-		this.port.postMessage({type: type, from: this.type, fromid: this.tabId, to: target, toid: tabId, data: data, ack: ack});
+
+		if(DEBUG) 
+			console.log("send", type, "to", name(target), "ack", ack);
+
+		this.port.postMessage({
+			type: type, 
+			from: this.type, 
+			fromid: this.tabId, 
+			to: target, 
+			toid: tabId, 
+			data: data, 
+			ack: ack
+		});
+
 	}
 
 	/**
@@ -67,8 +95,16 @@ class PortBase {
 	 * @return {Promise}
 	 */
 	wait(target, type, data, tabId = -1) {
-		let ack = ++this.ack, prom = new Promise(resolve => this.promises.set(ack, resolve));
+
+		let ack = ++this.ack, 
+			prom = new Promise(
+				resolve => 
+				this.promises.set(ack, resolve)
+			);
+
 		this.send(target, type, data, tabId, ack);
+
 		return prom;
+
 	}
 }

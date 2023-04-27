@@ -7,11 +7,20 @@ class BackgroundScript {
 	 * @construct
 	 */
 	constructor() {
-		this.port = new BackgroundPort(this.onMessage.bind(this), this.onConnect.bind(this), this.onDisconnect.bind(this));
+
+		this.port = new BackgroundPort(
+			this.onMessage.bind(this), 
+			this.onConnect.bind(this), 
+			this.onDisconnect.bind(this)
+		);
 
 		this.tabs = new Map();
 
-		which.tabs.onUpdated.addListener((tabid, info, tab) => this.onUpdateTab(tabid, info, tab));
+		which.tabs.onUpdated
+		.addListener(
+			(tabid, info, tab) => 
+			this.onUpdateTab(tabid, info, tab)
+		);
 		
 		this.start();
 	}
@@ -21,7 +30,10 @@ class BackgroundScript {
 	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) console.log("START BACKGROUND SCRIPT");
+
+		if(DEBUG) 
+			console.log("START BACKGROUND SCRIPT");
+
 	}
 
 	onOpen() {
@@ -33,8 +45,13 @@ class BackgroundScript {
 	 * @param {number} tabId : 
 	 */
 	onConnect(tabId) {
-		if(DEBUG) console.log("new tab :", tabId);
-		this.tabs.set(tabId, {});
+
+		if(DEBUG) 
+			console.log("new tab :", tabId);
+
+		this.tabs
+		.set(tabId, {});
+
 	}
 
 	/**
@@ -42,7 +59,10 @@ class BackgroundScript {
 	 * @param {number} tabId : 
 	 */
 	onDisconnect(tabId) {
-		if(DEBUG) console.log("close tab", tabId);
+
+		if(DEBUG) 
+			console.log("close tab", tabId);
+
 	}
 
 	/**
@@ -53,15 +73,21 @@ class BackgroundScript {
 	 * @param {number} tabId : emitter tabId if available
 	 */
 	onMessage(from, type, data, tabId) {
-		if(DEBUG) console.log(type, "from", name(from), "tab", tabId);
+
+		if(DEBUG) 
+			console.log(type, "from", name(from), "tab", tabId);
+
 		let result = null;
+
 		switch(type) {
 
 			default:
 				break;
 
 		}
+
 		return result;
+
 	}
 
 	/**
@@ -71,9 +97,11 @@ class BackgroundScript {
 	 * @param {Object} tab : 
 	 */
 	onUpdateTab(tabId, info, tab) {
+
 		//console.log(tab, info);
 
-		if(this.tabs.has(tabId)) this.tabs.set(tabId, tab);
+		if(this.tabs.has(tabId)) 
+			this.tabs.set(tabId, tab);
 
 	}
 
@@ -82,7 +110,18 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	activeTab() {
-		return new Promise(resolve => which.tabs.query({"active": true, "currentWindow": true}, tabs => resolve(tabs[0])));
+
+		return new Promise(
+			resolve => 
+			which.tabs.query(
+				{
+					"active": true, 
+					"currentWindow": true
+				}, 
+				tabs => resolve(tabs[0])
+			)
+		);
+	
 	}
 
 	/**
@@ -92,7 +131,12 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	updateTab(tabId, updateInfos) {
-		return new Promise(resolve => which.tabs.update(tabId, updateInfos, tab => resolve(tab)));
+
+		return new Promise(
+			resolve => 
+			which.tabs.update(tabId, updateInfos, tab => resolve(tab))
+		);
+
 	}
 
 	/**
@@ -101,7 +145,9 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	mute(tabId) {
+
 		return this.updateTab(tabId, {"muted": true});
+
 	}
 	
 	/**
@@ -110,7 +156,9 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	unmute(tabId) {
+
 		return this.updateTab(tabId, {"muted": false});
+
 	}
 	
 	/**
@@ -120,7 +168,12 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	reload(tabId, bypassCache = false) {
-		return new Promise(resolve => which.tabs.reload(tabId, {"bypassCache": bypassCache}, () => resolve()));
+
+		return new Promise(
+			resolve => 
+			which.tabs.reload(tabId, {"bypassCache": bypassCache}, () => resolve())
+		);
+
 	}
 
 	/**
@@ -130,7 +183,12 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	exec(tabId, code) {
-		return new Promise(resolve => which.tabs.executeScript(tabId, {"code": code}, result => resolve(result)));
+
+		return new Promise(
+			resolve => 
+			which.tabs.executeScript(tabId, {"code": code}, result => resolve(result))
+		);
+
 	}
 	
 	/**
@@ -139,7 +197,12 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	close(tabId) {
-		return new Promise(resolve => which.tabs.remove(tabId, result => resolve(result)));
+
+		return new Promise(
+			resolve => 
+			which.tabs.remove(tabId, result => resolve(result))
+		);
+
 	}
 	
 	/**
@@ -148,7 +211,12 @@ class BackgroundScript {
 	 * @return {Promise}
 	 */
 	download(options) {
-		return new Promise(resolve => which.downloads.download(options, result => resolve(result)));
+
+		return new Promise(
+			resolve => 
+			which.downloads.download(options, result => resolve(result))
+		);
+
 	}
 
 	/**
@@ -160,18 +228,26 @@ class BackgroundScript {
 	 * @param {number} height : window height
 	 */
 	createWindow(url, x, y, width, height) {
-		return new Promise((resolve, reject) => which.windows.create({
-			"url": url,
-			"left": x,
-			"top": y,
-			"width": width,
-			"height": height, 
-			//"focused": true,
-			"incognito": false,
-			"type": "popup", // "normal", "popup"
-			//"state": state, // "normal", "minimized", "maximized", "fullscreen"
-			"setSelfAsOpener": false
-		}, window => resolve(window)));
+
+		return new Promise(
+			(resolve, reject) => 
+			which.windows.create(
+				{
+					"url": url,
+					"left": x,
+					"top": y,
+					"width": width,
+					"height": height, 
+					//"focused": true,
+					"incognito": false,
+					"type": "popup", // "normal", "popup"
+					//"state": state, // "normal", "minimized", "maximized", "fullscreen"
+					"setSelfAsOpener": false
+				}, 
+				window => resolve(window)
+			)
+		);
+
 	}
 	
 	/**
@@ -180,19 +256,30 @@ class BackgroundScript {
 	 * @param {Object} updates : 
 	 */
 	updateWindow(windowId, updates) {
-		return new Promise((resolve, reject) => which.windows.update(windowId, updates, window => resolve(window)));
+
+		return new Promise(
+			(resolve, reject) => 
+			which.windows.update(windowId, updates, window => resolve(window))
+		);
+
 	}
 
 	get failed() {
+
 		return which.runtime.lastError !== "undefined";
+
 	}
 
 	get lastError() {
+
 		return Error(which.runtime.lastError);
+
 	}
 
 	static get type() {
+
 		return BACKGROUND;
+		
 	}
 
 }

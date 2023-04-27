@@ -9,6 +9,7 @@ class ExtensionWebScript extends WebScript {
 	 */
 	constructor() {
 		super();
+		
 	}
 	
 	/**
@@ -19,6 +20,7 @@ class ExtensionWebScript extends WebScript {
 		await super.start();
 		
 		console.log("custom start web");
+
 	}
 
 }

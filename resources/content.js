@@ -32,6 +32,7 @@ class ExtensionContentScript extends ContentScript {
 	 * @param {number} tabId : 
 	 */
 	onMessage(from, type, data, tabId) {
+
 		let result = super.onMessage(from, type, data, tabId);
 
 		// message from background, web or popup
@@ -44,6 +45,7 @@ class ExtensionContentScript extends ContentScript {
 		}
 
 		return result;
+		
 	}
 
 }

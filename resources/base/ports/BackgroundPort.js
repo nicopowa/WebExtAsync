@@ -19,8 +19,12 @@ class BackgroundPort extends PortBase {
 		this.webPorts = new Map();
 		this.popupPort = null;
 
-		which.runtime.onConnect.addListener(this.onPortConnect.bind(this));
-		which.runtime.onConnectExternal.addListener(this.onExternalPortConnect.bind(this));
+		which.runtime.onConnect
+		.addListener(this.onPortConnect.bind(this));
+
+		which.runtime.onConnectExternal
+		.addListener(this.onExternalPortConnect.bind(this));
+
 	}
 
 	/**
@@ -30,15 +34,23 @@ class BackgroundPort extends PortBase {
 	async onPortConnect(port) {
 
 		if(port.sender.id != which.runtime.id) {
+
 			console.log("extension", port.sender.id, "not allowed");
+
 			return port.disconnect();
+
 		}
 		
 		let type = parseInt(port.name, 10);
-		if(DEBUG) console.log(name(type), "port connected");
 
-		port.onMessage.addListener((message, port) => this.onPortMessage(message, port, null));
-		port.onDisconnect.addListener(this.onPortDisconnect.bind(this));
+		if(DEBUG) 
+			console.log(name(type), "port connected");
+
+		port.onMessage
+		.addListener((message, port) => this.onPortMessage(message, port, null));
+
+		port.onDisconnect
+		.addListener(this.onPortDisconnect.bind(this));
 		
 		switch(type) {
 			
@@ -63,8 +75,11 @@ class BackgroundPort extends PortBase {
 	 * @param {Port} port : connected port
 	 */
 	onExternalPortConnect(port) {
+
 		let type = parseInt(port.name, 10);
-		if(DEBUG) console.log(name(type), "port connected");
+
+		if(DEBUG) 
+			console.log(name(type), "port connected");
 
 		switch(type) {
 				
@@ -79,8 +94,12 @@ class BackgroundPort extends PortBase {
 			
 		}
 
-		port.onMessage.addListener((message, port) => this.onPortMessage(message, port, null));
-		port.onDisconnect.addListener(this.onPortDisconnect.bind(this));
+		port.onMessage
+		.addListener((message, port) => this.onPortMessage(message, port, null));
+
+		port.onDisconnect
+		.addListener(this.onPortDisconnect.bind(this));
+
 	}
 
 	/**
@@ -91,12 +110,20 @@ class BackgroundPort extends PortBase {
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
+
 		//if(DEBUG) console.log(port, result);
+
 		if(message.to !== BACKGROUND) {
-			if(DEBUG) console.log("relay", message.type, "to", name(message.to), "ack", message.ack);
+
+			if(DEBUG) 
+				console.log("relay", message.type, "to", name(message.to), "ack", message.ack);
+
 			this.send(message.to, message.type, message.data, message.toid, message.ack, message.from, message.fromid);
+
 		}
-		else super.onPortMessage(message, port, result);
+		else 
+			super.onPortMessage(message, port, result);
+
 	}
 	
 	/**
@@ -104,10 +131,14 @@ class BackgroundPort extends PortBase {
 	 * @param {Port} port : disconnected port
 	 */
 	onPortDisconnect(port) {
+
 		let type = parseInt(port.name, 10);
-		if(DEBUG) console.log(name(type), "port disconnected");
+
+		if(DEBUG) 
+			console.log(name(type), "port disconnected");
 
 		switch(type) {
+
 			case CONTENT:
 				this.contentPorts.delete(port.sender.tab.id);
 				this.onDisconnect(port.sender.tab.id);
@@ -120,7 +151,9 @@ class BackgroundPort extends PortBase {
 			case POPUP:
 				this.popupPort = null;
 				break;
+
 		}
+
 	}
 
 	/**
@@ -136,9 +169,22 @@ class BackgroundPort extends PortBase {
 	 */
 	send(target, type, data, tabId = -1, ack = 0, from = BACKGROUND, fromid = -1) {
 		// no super call
-		if(DEBUG) console.log("send", type, "to", name(target), "ack", ack);
+		
+		if(DEBUG) 
+			console.log("send", type, "to", name(target), "ack", ack);
+		
 		let port = target === CONTENT ? this.contentPorts.get(tabId) : target === WEB ? this.webPorts.get(tabId) : this.popupPort;
-		port.postMessage({type: type, from: from, fromid: fromid, to: target, toid: tabId, data: data, ack: ack});
+		
+		port.postMessage({
+			type: type, 
+			from: from, 
+			fromid: fromid, 
+			to: target, 
+			toid: tabId, 
+			data: data, 
+			ack: ack
+		});
+
 	}
 
 }

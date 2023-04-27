@@ -15,11 +15,16 @@ class WebScript {
 	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) console.log("START WEB SCRIPT");
+
+		if(DEBUG) 
+			console.log("START WEB SCRIPT");
+
 	}
 
 	static get type() {
+
 		return WEB;
+		
 	}
 
 }

@@ -10,7 +10,9 @@ class PopupPort extends PortBase {
 	 */
 	constructor(onData) {
 		super(POPUP, onData);
+
 		this.tabs = [];
+
 	}
 
 	/**
@@ -22,11 +24,16 @@ class PopupPort extends PortBase {
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
+
 		if(message.type === "info") {
+
 			this.tabs = message.data;
 			console.log("tabs", this.tabs);
+
 		}
+
 		await super.onPortMessage(message, port, result);
+		
 	}
 
 }

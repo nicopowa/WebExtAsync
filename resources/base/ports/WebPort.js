@@ -22,15 +22,28 @@ class WebPort extends PortBase {
 	 * @param {*} result : 
 	 */
 	async onPortMessage(message, port, result) {
+
 		if(message.type === "info") { // && message.from == BACKGROUND
+
 			this.tabId = message.data;
 			console.log("this is tab", this.tabId);
 			result = this.tabId;
+
 		}
+
 		await super.onPortMessage(message, port, result);
+
 	}
 
 	send(target, type, data, tabId) {
-		this.port.postMessage({"type": type, "to": target, "id": tabId, "data": data});
+
+		this.port.postMessage({
+			"type": type, 
+			"to": target, 
+			"id": tabId, 
+			"data": data
+		});
+
 	}
+
 }

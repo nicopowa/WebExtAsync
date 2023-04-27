@@ -19,6 +19,7 @@ class ExtensionBackgroundScript extends BackgroundScript {
 		await super.start();
 		
 		console.log("custom start background");
+
 	}
 
 	/**
@@ -51,6 +52,7 @@ class ExtensionBackgroundScript extends BackgroundScript {
 	 * @param {number} tabId : 
 	 */
 	onMessage(from, type, data, tabId) {
+		
 		let result = super.onMessage(from, type, data, tabId);
 
 		// message from content, web or popup
@@ -63,6 +65,7 @@ class ExtensionBackgroundScript extends BackgroundScript {
 		}
 
 		return result;
+
 	}
 
 }

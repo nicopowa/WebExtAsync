@@ -8,7 +8,8 @@ WebExtension template with async messaging between background, content, web and 
 #### Structure :
 - Background script : allows the extension to access browser native features, such as tabs, debugger, ... 
 - Content script : injected in web pages that match the manifest rules. It is able to interact with the DOM.
-- Web script : code can be injected in target web page JS context. (TODO)
+- TODO Web script : code can be injected in target web page JS context.
+- TODO Worker script : heavy background nasty tasks
 - Popup script : a web page that runs in the browser's top right menu, contains extension settings.
 
 ## Set-up

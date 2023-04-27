@@ -7,7 +7,9 @@ class PopupScript {
 	 * @construct
 	 */
 	constructor() {
+
 		this.port = new PopupPort(this.onMessage.bind(this));
+
 	}
 
 	/**
@@ -15,7 +17,10 @@ class PopupScript {
 	 * @method start : script startup
 	 */
 	async start() {
-		if(DEBUG) console.log("START POPUP SCRIPT");
+
+		if(DEBUG) 
+			console.log("START POPUP SCRIPT");
+
 	}
 
 	/**
@@ -27,19 +32,29 @@ class PopupScript {
 	 * @param {number} tabId : emitter id
 	 */
 	async onMessage(from, type, data, tabId) {
-		if(DEBUG) console.log(type, "from", name(from), "tab", tabId);
+
+		if(DEBUG) 
+			console.log(type, "from", name(from), "tab", tabId);
+
 		let result = null;
+
 		switch(type) {
+
 			case "start":
 				await this.start();
 				result = true;
 				break;
+
 		}
+
 		return result;
+
 	}
 
 	static get type() {
+
 		return POPUP;
+		
 	}
 	
 }
